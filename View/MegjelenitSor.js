@@ -12,27 +12,25 @@ class MegjelenitSor {
         this.keszElem = this.sorElem.children("td").children(".kesz");
         this.torolElem = this.sorElem.children("td").children(".torol");
         this.megseElem = this.sorElem.children("td").children(".megse");
-        /* this.megseElem.css("visibility", "hidden"); */
-        this.megseElem.css("display", "none");
-        //console.log(this.keszElem);
-        this.keszElem.on("click", () => {
+        if (this.#adat.kesz) {
             this.sorElem.css("background-color", "lightgreen");
-            /*  this.megseElem.css("visibility", "visible");
-            this.keszElem.css("visibility", "hidden"); */
             this.megseElem.css("display", "inline");
             this.keszElem.css("display", "none");
-        });
-        this.megseElem.on("click", () => {
+        } else {
             this.sorElem.css("background-color", "white");
-            /*  this.keszElem.css("visibility", "visible");
-            this.megseElem.css("visibility", "hidden"); */
             this.keszElem.css("display", "inline");
             this.megseElem.css("display", "none");
+        }
+        this.keszElem.on("click", () => {
+            this.#esemenyTrigger("kesz");
+        });
+        this.megseElem.on("click", () => {
+            this.#esemenyTrigger("kesz");
         });
         this.torolElem.on("click", () => {
             this.sorElem.remove();
 
-            this.#esemenyTrigger();
+            this.#esemenyTrigger("torles");
         });
     }
     #sor() {
@@ -45,14 +43,15 @@ class MegjelenitSor {
                 txt += `<td>${element}</td>`;
             }
         }
-        txt += `<td><span class="kesz">✔️</span> <span class="megse">❌</span><span class="torol">🗑</span></td>`;
+        txt += `<td><span class="kesz">🍕</span> <span class="megse">🍔</span><span class="torol">🗑</span></td>`;
         txt += "</tr>";
 
         this.tablaElem.append(txt);
     }
-    #esemenyTrigger() {
-        const esemenyem = new CustomEvent("torles", { detail: this.#index });
+    #esemenyTrigger(esemenyNev) {
+        const esemenyem = new CustomEvent(esemenyNev, { detail: this.#index });
         window.dispatchEvent(esemenyem);
     }
+
 }
 export default MegjelenitSor;
