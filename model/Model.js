@@ -1,26 +1,25 @@
 import { TODOLIST2 } from "../model/adatok.js";
 class Model {
-    #list = []
-    constructor() {
-        this.#list = TODOLIST2;
+    #list = [];
+    constructor(list) {
+        this.#list = list;
     }
-
-    getList() {
-        return this.#list;
-    }
-
-    torol(index) {
+    torles(index) {
         this.#list.splice(index, 1);
     }
-
-    allapot(allapot) {
-        if (this.#list[allapot].kesz == true) {
-            this.#list[allapot].kesz = false;
-        } else {
-            this.#list[allapot].kesz = true;
-        }
-        console.log(this.#list[allapot].kesz);
+    kesz(index) {
+        this.#list[index].kesz = true;
     }
+    megse(index) {
+        this.#list[index].kesz = false;
+    }
+    ujAdatHozzaAdas(obj) {
+        this.#list.push(obj);
+    }
+    hatralevoFeladatokSzama() {}
+    elvegzettFeladatok() {}
+    hataridoigHatralevoNap() {}
+    kovetkezoHatarido() {}
 
    
 }

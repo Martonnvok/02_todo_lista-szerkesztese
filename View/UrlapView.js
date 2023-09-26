@@ -1,48 +1,47 @@
 class UrlapView {
-    #adat = []
-    formElem;
-    tevekenysegElem;
-    hataridoElem;
-    submitElem;
-    constructor(adat, szuloElem) {
-        const UJADAT = $(".ujadat");
-        this.#adat = adat;
-        this.szuloElem = szuloElem
-        this.szuloElem.html("<form>");
+    #obj = {};
+    #kulcsok = {};
+
+    constructor(kulcsok, obj, szuloElem) {
+        this.#kulcsok = kulcsok;
+        this.szuloElem = szuloElem;
+        this.szuloElem.html("<form >");
         this.formElem = this.szuloElem.children("form");
-        this.submitElem.children("#submit");
-        this.#urlapLetrehoz();
+        console.log(this.formElem);
+        this.#obj = obj;
+        this.#urlapLetrehozasa();
         this.submitGomb = this.formElem.children("div").children("#submit");
         console.log(this.submitGomb);
-        this.submitGomb.on("click", (event)=>{
+        this.submitGomb.on("click", (event) => {
+            console.log("katt");
             event.preventDefault();
             this.#adatGyujt();
-            this.#kattintasTrigger("ujAdatHozzaAdas");
+            this.#esemenyTrigger("ujAdatHozzaAdas");
         });
     }
-
     #adatGyujt() {
-        const IDO = $(".ido");
-        const TEV = $(".tev");
-        this.#adat = IDO.val();
-
-
+        for (const key in this.#obj) {
+            this.#obj[key] = $(`#${key}`).val();
+        }
+        console.log(this.#obj);
     }
-
-    #urlapLetrehoz() {
-        let txt =`<input text ="text" class="valami" >`;
-        txt += `<input text ="text" class="valami" >`;
-        txt += `<input text ="text" class="valami" >`;
-        txt += `<input text ="date" class="ido" >`;
-        txt += `<button type = "button" class="submit">Kész<button>`;
-        this.formElem.append(txt);
+    #urlapLetrehozasa() {
+        let txt = "";
+        for (const key in this.#obj) {
+            txt += `<div class="form-group">
+             <label for="${key}"   >${this.#kulcsok[key]}</label>
+            <input type="text" class="form-control" id="${key}" name="${key}" value="${
+                this.#obj[key]
+            }">
+            </div>`;
+        }
+        txt += `<div> 
+            <input type="submit" class="btn btn-primary" id="submit"  value="Hozzáad"></div>`;
+        this.formElem.html(txt);
     }
-
-    #kattintasTrigger(esemenyNev) {
-        const ESEMENYEM = new CustomEvent(esemenyNev, { detail: this.#adat });
-        window.dispatchEvent(ESEMENYEM);
+    #esemenyTrigger(esemenynev) {
+        const esemenyem = new CustomEvent(esemenynev, { detail: this.#obj });
+        window.dispatchEvent(esemenyem);
     }
-
 }
-
 export default UrlapView;
